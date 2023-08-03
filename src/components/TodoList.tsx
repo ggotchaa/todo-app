@@ -11,6 +11,9 @@ interface Todo {
 }
 
 const TodoList = () => {
+  //тут стейт менеджмент для редактирования туду
+  const [editTodoId, setEditTodoId] = useState<number | null>(null);
+
   const [todos, setTodos] = useState<Todo[]>(() => {
     // достаем список сохраненных туду из localstorage
     const localValue = localStorage.getItem("todosData");
@@ -64,6 +67,26 @@ const TodoList = () => {
     }
   };
 
+  const handleEditTodo = (todo: Todo) => {
+    setEditTodoId(todo.id);
+    setInputValue(todo.text);
+  };
+
+  const handleEditKeyDown = (e: React.KeyboardEvent, todo: Todo) => {
+    if (e.key === "Enter") {
+      handleSaveEdit(todo);
+    }
+  };
+
+  const handleSaveEdit = (todo: Todo) => {
+    setTodos((currentTodos) =>
+      currentTodos.map((item) =>
+        item.id === todo.id ? { ...item, text: inputValue } : item
+      )
+    );
+    setEditTodoId(null); // Clear the edit state after saving
+  };
+
   const filteredTodos = todos
     ? todos.filter((todo) => todo.completed !== false)
     : [];
@@ -98,15 +121,33 @@ const TodoList = () => {
         )}
         {todos.map((todo, index) => (
           <li key={index}>
-            <span className={todo.completed ? "completed" : ""}>
+            {/* Display input field for editing */}
+            {editTodoId === todo.id ? (
               <input
-                id="checkbox"
-                type="checkbox"
-                checked={todo.completed}
-                onChange={(e) => toggleTodo(todo.id, e.target.checked)}
+                type="text"
+                value={inputValue}
+                onChange={(e) => setInputValue(e.target.value)}
+                onKeyDown={(e) => handleEditKeyDown(e, todo)}
               />
-              {todo.text}
-            </span>
+            ) : (
+              <span className={todo.completed ? "completed" : ""}>
+                <input
+                  id="checkbox"
+                  type="checkbox"
+                  checked={todo.completed}
+                  onChange={(e) => toggleTodo(todo.id, e.target.checked)}
+                />
+                {todo.text}
+              </span>
+            )}
+
+            {/* Show the Edit button only if not in edit mode */}
+            {!editTodoId && (
+              <button className="edit" onClick={() => handleEditTodo(todo)}>
+                Edit
+              </button>
+            )}
+
             <button
               className="danger"
               onClick={() => handleDeleteTodo(todo.id)}
