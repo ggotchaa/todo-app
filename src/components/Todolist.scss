@@ -1,0 +1,90 @@
+$white: white;
+$black: black;
+$danger-clr: rgba(255, 0, 0, 0.549);
+$light-gray: gainsboro;
+$input-background: #e0e0e0;
+
+section#todoList {
+  width: 90%;
+  max-width: 600px;
+  margin: 20px auto;
+  background-color: $white;
+  padding: 20px;
+  border-radius: 10px;
+
+  header {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0px 20px;
+    align-items: center;
+  }
+
+  .input {
+    display: flex;
+    flex-direction: row-reverse;
+    background-color: $input-background;
+    padding-block: 5px;
+    input {
+      width: 100%;
+      border: none;
+      padding: 5px 10px;
+      background: $input-background;
+      &:focus {
+        outline: none;
+      }
+      border-radius: 5px;
+    }
+
+    button {
+      background-color: transparent;
+      border: none;
+      border-right: 1px solid $white;
+      padding-right: 5px;
+      font-size: 30px;
+      display: grid;
+      place-content: center;
+      margin-left: 5px;
+      color: $black;
+      cursor: pointer;
+    }
+  }
+  ul {
+    list-style-type: none;
+    padding: 10px 5px;
+
+    li {
+      border-bottom: 1px solid $light-gray;
+      padding-block: 7px;
+      display: flex;
+      align-items: center;
+      font-size: 17px;
+
+      button {
+        padding: 4px;
+        display: flex;
+        align-items: center;
+        background-color: transparent;
+        margin-left: auto;
+        border: none;
+        font-size: 20px;
+        cursor: pointer;
+        color: $danger-clr;
+      }
+      span {
+        word-break: break-all;
+      }
+      #checkbox {
+        width: 20px;
+        height: 20px;
+        cursor: pointer;
+        position: relative;
+        top: 5px;
+        margin-right: 10px;
+      }
+
+      .completed {
+        text-decoration: line-through;
+      }
+    }
+  }
+}
